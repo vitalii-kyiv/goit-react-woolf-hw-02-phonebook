@@ -14,6 +14,7 @@ class App extends Component {
     number: '',
   };
   addContact = data => {
+    console.log(this.state)
     const contact = {
       id: nanoid(),
       name: data.name,
@@ -35,6 +36,11 @@ class App extends Component {
     this.setState({ [evt.target.name]: evt.target.value });
     console.log(this.state);
   };
+
+  getFilteredContacts() {
+    const { filter, contacts } = this.state;
+    return contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
+  }
   render() {
     return (
       <div
@@ -78,19 +84,18 @@ class App extends Component {
         </form>
         <label>
           Find contacts by name
-          <input onChange={this.handleChange} type="search" name="filter" />
-          <ul>
-            {this.state.contacts.filter => (
-              <li key={contact.id}>
-                <p>
-                  {contact.name}:{contact.number}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </label>
-        <ul>
-          {this.state.contacts.map(contact => (
+          <input onChange={this.handleChange} type="search" name="filter" value={this.state.filter} />
+          </label>
+          {/* <ul>
+            {this.getFilteredContacts().map(contact => (
+            <li key={contact.id}>
+              <p>{contact.name}:{contact.number}</p>
+            </li>
+            ))
+            }
+          </ul> */}
+                <ul>
+          {this.getFilteredContacts().map(contact => (
             <li key={contact.id}>
               <p>
                 {contact.name}:{contact.number}
